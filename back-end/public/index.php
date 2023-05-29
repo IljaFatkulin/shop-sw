@@ -5,7 +5,6 @@ header('Access-Control-Allow-Headers: *');
 header('Access-Control-Allow-Methods: *');
 header('Access-Control-Allow-Credentials: true');
 //header('Content-Type: json/application');
-// PRIVET IZ GITA 2
 
 require_once('../vendor/autoload.php');
 
