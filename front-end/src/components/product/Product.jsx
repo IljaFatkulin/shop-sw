@@ -14,7 +14,7 @@ const Product = ({id, name, sku, price, productType, dimension, size, weight, ..
                     <p>{productType}</p>
                     <p>{dimension}{size}{weight}</p>
                     <div className={classes.checkbox_delete}>
-                        <input type="checkbox" {...props} />
+                        <input className="delete-checkbox" type="checkbox" {...props} />
                     </div>
             </div>
         );

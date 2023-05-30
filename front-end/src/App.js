@@ -1,20 +1,20 @@
 import React from "react";
 import './styles/App.css';
-import ProductForm from "./components/product/ProductForm";
-import ProductsList from "./components/product/ProductsList";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import AddProduct from "./pages/AddProduct";
+import Products from "./pages/Products";
 
 function App() {
-
     return (
-    <div className="App">
-        <ProductsList/>
-
-        <br/><br/><br/>
-
-        <ProductForm/>
-    </div>
+        <div className="App">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Products/>}/>
+                    <Route path="/addproduct" element={<AddProduct/>}/>
+                </Routes>
+            </BrowserRouter>
+        </div>
     );
-
 }
 
 

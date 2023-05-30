@@ -26,7 +26,7 @@ class API
                 $data = json_decode($request_body, true);
 
                 $setDB = new \App\SetDB();
-                $setDB->addProduct($data['sku'], $data['name'], $data['price'], $data['productType']);
+                $setDB->addProduct($data);
                 break;
             case "DELETE":
                 $data = $_GET['q'];

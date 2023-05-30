@@ -3,6 +3,8 @@ import axios from "axios";
 import Product from "./Product";
 import classes from "./Product.module.css";
 import ProductFilter from "./ProductFilter";
+import {Link} from "react-router-dom";
+import MyButton from "../UI/button/MyButton";
 
 const ProductsList = () => {
     const [products, setProducts] = useState([]);
@@ -29,7 +31,6 @@ const ProductsList = () => {
 
     useEffect(() => {
         axios.get('http://localhost:8888/shop-sw/back-end/public/')
-        // axios.get('http://localhost/shop-sw/back-end/public/')
             .then(response => {
                 setProducts(response.data);
             });
@@ -37,7 +38,6 @@ const ProductsList = () => {
 
     const deleteProducts = () => {
         axios.delete(`http://localhost:8888/shop-sw/back-end/public/${ids}`)
-        // axios.delete(`http://localhost/shop-sw/back-end/public/${ids}`)
             .then(response => {
                 return response
             });
@@ -53,14 +53,19 @@ const ProductsList = () => {
 
     return (
         <div>
-            <h2>Product List</h2>
-            <hr/>
+            <header>
+                <h2>Product List</h2>
+                <div className={classes.buttons}>
+                    <Link className={classes.link} to="/addproduct"><MyButton>ADD</MyButton></Link>
+                    <MyButton id="delete-product-btn" onClick={deleteProducts}>MASS DELETE</MyButton>
+                </div>
+                <hr/>
+            </header>
 
             <ProductFilter
                 filter={filter}
                 setFilter={setFilter}
             />
-            <button onClick={deleteProducts}>MASS DELETE</button>
             <div className={classes.productList}>
                 {processedProducts.length
                     ?
