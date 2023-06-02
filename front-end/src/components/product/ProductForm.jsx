@@ -3,7 +3,7 @@ import axios from "axios";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
 import MySelect from "../UI/select/MySelect";
-import classes from "./Product.module.css";
+import classes from "../../styles/Product.module.css";
 import {Link} from "react-router-dom";
 
 const ProductForm = () => {
@@ -13,7 +13,17 @@ const ProductForm = () => {
     function formValid(e) {
         e.preventDefault();
         if(product.sku !== '' && product.name !== '' && product.productType !== '' && product.productType !== '') {
-            addNewProduct();
+            switch (product.productType) {
+                case 'book':
+                    if(product.weight !== '') addNewProduct();
+                    break;
+                case 'dvd':
+                    if(product.size !== '') addNewProduct();
+                    break;
+                case 'furniture':
+                    if(product.length !== '' && product.height !== '' && product.width !== '') addNewProduct();
+                    break;
+            }
         }
     }
     function addNewProduct() {

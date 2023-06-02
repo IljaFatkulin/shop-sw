@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
-import axios from "axios";
-import classes from "./Product.module.css";
-import MyButton from "../UI/button/MyButton";
+import React from 'react';
+import classes from "../../styles/Product.module.css";
+
 
 const Product = ({id, name, sku, price, productType, dimension, size, weight, ...props}) => {
 
