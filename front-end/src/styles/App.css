@@ -17,13 +17,14 @@
 header {
   position: relative;
 }
-
-h2 {
+header h2 {
   display: inline-block;
 }
-
-.buttons {
+header .buttons {
   display: inline-block;
+}
+header .container {
+  margin: 10px 0;
 }
 
 /*# sourceMappingURL=App.css.map */

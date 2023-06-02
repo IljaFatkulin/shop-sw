@@ -38,10 +38,12 @@ const ProductForm = () => {
     return (
         <div>
             <header>
-                <h2>Product Add</h2>
-                <div className={classes.buttons}>
-                    <MyButton onClick={formValid}>Save</MyButton>
-                    <Link className={classes.link} to="/"><MyButton>Cancel</MyButton></Link>
+                <div className="container">
+                    <h2>Product Add</h2>
+                    <div className={classes.buttons}>
+                        <MyButton onClick={formValid}>Save</MyButton>
+                        <Link className={classes.link} to="/"><MyButton>Cancel</MyButton></Link>
+                    </div>
                 </div>
                 <hr/>
             </header>

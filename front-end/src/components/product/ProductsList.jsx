@@ -34,10 +34,12 @@ const ProductsList = () => {
     return (
         <div>
             <header>
-                <h2>Product List</h2>
-                <div className={classes.buttons}>
-                    <Link className={classes.link} to="/addproduct"><MyButton>ADD</MyButton></Link>
-                    <MyButton id="delete-product-btn" onClick={deleteProducts}>MASS DELETE</MyButton>
+                <div className="container">
+                    <h2>Product List</h2>
+                    <div className={classes.buttons}>
+                        <Link className={classes.link} to="/addproduct"><MyButton>ADD</MyButton></Link>
+                        <MyButton id="delete-product-btn" onClick={deleteProducts}>MASS DELETE</MyButton>
+                    </div>
                 </div>
                 <hr/>
             </header>

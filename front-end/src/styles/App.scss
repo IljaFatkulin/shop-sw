@@ -16,12 +16,13 @@
 
 header {
   position: relative;
-}
-
-h2 {
-  display: inline-block;
-}
-
-.buttons {
-  display: inline-block;
+  h2 {
+    display: inline-block;
+  }
+  .buttons {
+    display: inline-block;
+  }
+  .container {
+    margin: 10px 0;
+  }
 }
