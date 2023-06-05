@@ -14,15 +14,17 @@ const ProductForm = () => {
         e.preventDefault();
         if(product.sku !== '' && product.name !== '' && product.productType !== '' && product.productType !== '') {
             switch (product.productType) {
-                case 'book':
+                case 'Book':
                     if(product.weight !== '') addNewProduct();
                     break;
-                case 'dvd':
+                case 'DVD':
                     if(product.size !== '') addNewProduct();
                     break;
-                case 'furniture':
+                case 'Furniture':
                     if(product.length !== '' && product.height !== '' && product.width !== '') addNewProduct();
                     break;
+		default:
+		    break;
             }
         }
     }
@@ -89,15 +91,15 @@ const ProductForm = () => {
                         onChange={e => setProduct({...product, productType: e})}
                         defaultValue="Type Switcher"
                         options={[
-                            {id: 'Book', value: 'book', name: 'book'},
-                            {id: 'DVD', value: 'dvd', name: 'dvd'},
-                            {id: 'Furniture', value: 'furniture', name: 'furniture'}
+                            {id: 'Book', value: 'Book', name: 'Book'},
+                            {id: 'DVD', value: 'DVD', name: 'DVD'},
+                            {id: 'Furniture', value: 'Furniture', name: 'Furniture'}
                         ]}
                     />
                 </div>
 
                 {
-                    product.productType === 'book' ? (
+                    product.productType === 'Book' ? (
                         <div>
                             <label>Weight (KG)</label>
                             <MyInput
@@ -108,7 +110,7 @@ const ProductForm = () => {
                                 placeholder='Weight'
                             />
                         </div>
-                    ) : product.productType === 'dvd' ? (
+                    ) : product.productType === 'DVD' ? (
                         <div>
                             <label>Size (MB)</label>
                             <MyInput
@@ -119,7 +121,7 @@ const ProductForm = () => {
                                 placeholder='Size'
                             />
                         </div>
-                    ) : product.productType === 'furniture' ? (
+                    ) : product.productType === 'Furniture' ? (
                         <div>
                             <div>
                                 <label>Height (CM)</label>

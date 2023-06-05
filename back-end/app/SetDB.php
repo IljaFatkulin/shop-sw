@@ -21,13 +21,13 @@ class SetDB extends DatabaseConnection
 
         switch ($productType)
         {
-            case 'book':
+            case 'Book':
                 $this->addBook($last_id, $data['weight']);
                 break;
-            case 'dvd':
+            case 'DVD':
                 $this->addDvd($last_id, $data['size']);
                 break;
-            case 'furniture':
+            case 'Furniture':
                 $this->addFurniture($last_id, $data['height'], $data['width'], $data['length']);
                 break;
         }

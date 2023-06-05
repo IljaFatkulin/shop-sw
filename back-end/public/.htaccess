@@ -1,12 +1,5 @@
-#<IfModule mod_rewrite.so>
-RewriteEngine On
+Options +FollowSymlinks
+RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.+)$ index.php?q=$1 [L,QSA]
-#</IfModule>
-#<IfModule mod_rewrite.c>
-#    RewriteEngine On
-#    RewriteCond %{REQUEST_FILENAME} !-f
-#	RewriteCond %{REQUEST_FILENAME} !-d
-#    RewriteRule ^(.+)$ index.php?q=$1 [L,NC,QSA]
-##	RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
-#</IfModule>
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?q=$1 [NC]

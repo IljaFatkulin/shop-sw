@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Product from "./Product";
 import classes from "../../styles/Product.module.css";

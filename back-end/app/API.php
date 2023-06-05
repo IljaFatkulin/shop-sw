@@ -21,6 +21,7 @@ class API
                 echo json_encode($products);
                 break;
             case "POST":
+//		echo $_SERVER['REQUEST_URI'];
 //                $data = $_POST;
                 $request_body = file_get_contents('php://input');
                 $data = json_decode($request_body, true);
