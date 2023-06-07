@@ -13,7 +13,7 @@ class SetDB extends DatabaseConnection
         $productType = $data['productType'];
         $sql = "INSERT INTO products (sku, name, price, productType)
                 VALUES ('$sku', '$name', '$price', '$productType')";
-
+        
         $mysqli = $this->mysqli();
         $mysqli->query($sql);
 

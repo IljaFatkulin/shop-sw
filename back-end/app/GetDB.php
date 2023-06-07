@@ -18,4 +18,21 @@ class GetDB extends DatabaseConnection
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getSkuList(): array
+    {
+        $sql = "SELECT sku FROM products";
+
+        $result = $this->mysqli()->query($sql);
+
+        $output = [];
+
+        while($row =mysqli_fetch_assoc($result))
+        {
+            $output[] = $row['sku'];
+        }
+
+        return $output;
+//        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }

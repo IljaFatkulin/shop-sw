@@ -50,3 +50,27 @@ label {
   width: 150px;
   margin: 20px 0 0 0;
 }
+
+.msgSubmitData {
+  width: 40%;
+  margin-top: 10px;
+  padding: 10px;
+  text-align: center;
+  border: 2px solid #FF4040;
+  border-radius: 12px;
+  background-color: #FF6F6F;
+}
+
+.msgIncorrectType {
+  display: inline-block;
+  color: red;
+  margin-left: 10px;
+}
+
+
+.select {
+  display: inline-block;
+  width: 200px;
+  padding: 5px 15px;
+  border: 1px solid black;
+}

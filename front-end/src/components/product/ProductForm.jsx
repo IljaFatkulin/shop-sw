@@ -1,160 +1,226 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
-import MySelect from "../UI/select/MySelect";
 import classes from "../../styles/Product.module.css";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
 
 const ProductForm = () => {
+    const navigate = useNavigate();
 
-    const [product, setProduct] = useState({sku: '', name: '', price: '', productType: '', weight: '', size: '', height: '', width: '', length: ''});
-
-    function formValid(e) {
-        e.preventDefault();
-        if(product.sku !== '' && product.name !== '' && product.productType !== '' && product.productType !== '') {
-            switch (product.productType) {
-                case 'Book':
-                    if(product.weight !== '') addNewProduct();
-                    break;
-                case 'DVD':
-                    if(product.size !== '') addNewProduct();
-                    break;
-                case 'Furniture':
-                    if(product.length !== '' && product.height !== '' && product.width !== '') addNewProduct();
-                    break;
-		default:
-		    break;
-            }
+    const {
+        register,
+        watch,
+        formState: { errors, submitCount, isValid },
+        handleSubmit
+    } = useForm({
+        mode: "onBlur",
+        defaultValues: {
+            productType: ""
         }
-    }
-    function addNewProduct() {
-        axios.post('http://localhost:8888/shop-sw/back-end/public/', product)
-            .then(response => {
-                console.log(response.data);
-            });
+    });
 
-        setProduct({sku: '', name: '', price: '', productType: '', weight: '', size: '', height: '', width: '', length: ''});
+    const onSubmit = (data) => {
+        addNewProduct(JSON.stringify(data));
+    };
+
+    function addNewProduct(data) {
+        axios.post('http://localhost:8888/shop-sw/back-end/public/', data)
+            .then(response => {
+                navigate('/');
+            });
+    }
+
+    async function skuValidation(sku) {
+        let skuList = [];
+        let isFound = false;
+        await axios.get('http://localhost:8888/shop-sw/back-end/public/sku')
+            .then(response => {
+                skuList = response.data;
+                isFound = skuList.includes(sku);
+            });
+        return isFound;
     }
 
     return (
         <div>
-            <header>
-                <div className="container">
-                    <h2>Product Add</h2>
-                    <div className={classes.buttons}>
-                        <MyButton onClick={formValid}>Save</MyButton>
-                        <Link className={classes.link} to="/"><MyButton>Cancel</MyButton></Link>
+            <form id="product_form" onSubmit={handleSubmit(onSubmit)}>
+                <header>
+                    <div className="container">
+                        <h2>Product Add</h2>
+                        <div className={classes.buttons}>
+                            <MyButton type="submit">Save</MyButton>
+                            <Link className={classes.link} to="/"><MyButton>Cancel</MyButton></Link>
+                        </div>
                     </div>
-                </div>
-                <hr/>
-            </header>
-            <form id="product_form">
+                    <hr/>
+                </header>
+                {!isValid && submitCount > 0 && <div className={classes.msgSubmitData}>Please, submit required data</div>}
                 <div>
                     <label>SKU</label>
                     <MyInput
+                        {...register('sku', {
+                            required: true,
+                            validate: async (value) => {
+                                if(await skuValidation(value) === true) {
+                                    return "SKU should be unique for each product";
+                                }
+                            }
+                        })}
                         id="sku"
-                        value={product.sku}
-                        onChange={e => setProduct({...product, sku: e.target.value})}
-                        type="text"
                         placeholder='SKU'
+                        style = {errors?.sku && {border: '1px solid red', }}
                     />
+                    <div className={classes.msgIncorrectType}>
+                        {errors?.sku && <p>{errors?.sku?.message}</p>}
+                    </div>
                 </div>
 
                 <div>
                     <label>Name</label>
                     <MyInput
+                        {...register('name', {
+                            required: true
+                        })}
                         id="name"
-                        value={product.name}
-                        onChange={e => setProduct({...product, name: e.target.value})}
-                        type="text"
                         placeholder='Name'
+                        style = {errors?.name && {border: '1px solid red', }}
                     />
                 </div>
 
                 <div>
                     <label>Price ($)</label>
                     <MyInput
+                        {...register('price', {
+                            required: true,
+                            pattern: {
+                                value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                                message: 'Please, provide the data of indicated type'
+                            }
+                        })}
                         id="price"
-                        value={product.price}
-                        onChange={e => setProduct({...product, price: e.target.value})}
-                        type="number"
                         placeholder='Price'
+                        style = {errors?.price && {border: '1px solid red'}}
                     />
+                    <div className={classes.msgIncorrectType}>
+                        {errors?.price && <p>{errors?.price?.message}</p>}
+                    </div>
                 </div>
 
                 <div>
                     <label>Type Switcher</label>
-                    <MySelect
+                    <select
+                        className={classes.select}
+                        style = {errors?.productType && {border: '1px solid red', color: 'red'}}
                         id="productType"
-                        value={product.productType}
-                        onChange={e => setProduct({...product, productType: e})}
-                        defaultValue="Type Switcher"
-                        options={[
-                            {id: 'Book', value: 'Book', name: 'Book'},
-                            {id: 'DVD', value: 'DVD', name: 'DVD'},
-                            {id: 'Furniture', value: 'Furniture', name: 'Furniture'}
-                        ]}
-                    />
+                        {...register('productType', {required: true})}
+                    >
+                        <option value="" disabled>Type Switcher</option>
+                        <option id="Book" value="Book">Book</option>
+                        <option id="DVD" value="DVD">DVD</option>
+                        <option id="Furniture" value="Furniture">Furniture</option>
+                    </select>
                 </div>
 
                 {
-                    product.productType === 'Book' ? (
+                    watch('productType') === 'Book' ? (
                         <div>
                             <label>Weight (KG)</label>
                             <MyInput
+                                {...register('weight', {
+                                    required: true,
+                                    pattern: {
+                                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                                        message: 'Please, provide the data of indicated type'
+                                    }
+                                })}
                                 id="weight"
-                                value={product.weight}
-                                onChange={e => setProduct({...product, weight: e.target.value})}
-                                type="number"
                                 placeholder='Weight'
+                                style = {errors?.weight && {border: '1px solid red', }}
                             />
+                            <div className={classes.msgIncorrectType}>
+                                {errors?.weight && <p>{errors?.weight?.message}</p>}
+                            </div>
                         </div>
-                    ) : product.productType === 'DVD' ? (
+                    ) : watch('productType') === 'DVD' ? (
                         <div>
                             <label>Size (MB)</label>
                             <MyInput
+                                {...register('size', {
+                                    required: true,
+                                    pattern: {
+                                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                                        message: 'Please, provide the data of indicated type'
+                                    }
+                                })}
                                 id="size"
-                                value={product.size}
-                                onChange={e => setProduct({...product, size: e.target.value})}
-                                type="number"
                                 placeholder='Size'
+                                style = {errors?.size && {border: '1px solid red', }}
                             />
+                            <div className={classes.msgIncorrectType}>
+                                {errors?.size && <p>{errors?.size?.message}</p>}
+                            </div>
                         </div>
-                    ) : product.productType === 'Furniture' ? (
+                    ) : watch('productType') === 'Furniture' ? (
                         <div>
                             <div>
                                 <label>Height (CM)</label>
                                 <MyInput
+                                    {...register('height', {
+                                        required: true,
+                                        pattern: {
+                                            value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                                            message: 'Please, provide the data of indicated type'
+                                        }
+                                    })}
                                     id="height"
-                                    value={product.height}
-                                    onChange={e => setProduct({...product, height: e.target.value})}
-                                    type="number"
                                     placeholder='Height'
+                                    style = {errors?.height && {border: '1px solid red', }}
                                 />
+                                <div className={classes.msgIncorrectType}>
+                                    {errors?.height && <p>{errors?.height?.message}</p>}
+                                </div>
                             </div>
                             <div>
                                 <label>Width (CM)</label>
                                 <MyInput
+                                    {...register('width', {
+                                        required: true,
+                                        pattern: {
+                                            value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                                            message: 'Please, provide the data of indicated type'
+                                        }
+                                    })}
                                     id="width"
-                                    value={product.width}
-                                    onChange={e => setProduct({...product, width: e.target.value})}
-                                    type="number"
                                     placeholder='Width'
+                                    style = {errors?.width && {border: '1px solid red', }}
                                 />
+                                <div className={classes.msgIncorrectType}>
+                                    {errors?.width && <p>{errors?.width?.message}</p>}
+                                </div>
                             </div>
                             <div>
                                 <label>Length (CM)</label>
                                 <MyInput
+                                    {...register('length', {
+                                        required: true,
+                                        pattern: {
+                                            value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                                            message: 'Please, provide the data of indicated type'
+                                        }
+                                    })}
                                     id="length"
-                                    value={product.length}
-                                    onChange={e => setProduct({...product, length: e.target.value})}
-                                    type="number"
                                     placeholder='Length'
+                                    style = {errors?.length && {border: '1px solid red', }}
                                 />
+                                <div className={classes.msgIncorrectType}>
+                                    {errors?.length && <p>{errors?.length?.message}</p>}
+                                </div>
                             </div>
                         </div>
-                    ) : ( <p></p> )
+                    ) : ( <div></div> )
                 }
             </form>
         </div>

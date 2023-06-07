@@ -17,12 +17,16 @@ class API
         {
             case "GET":
                 $getDB = new \App\GetDB();
-                $products = $getDB->getAllProducts();
-                echo json_encode($products);
+
+                if(isset($_GET['q']) && $_GET['q'] === "sku") {
+                    $skuList = $getDB->getSkuList();
+                    echo json_encode($skuList);
+                } else {
+                    $products = $getDB->getAllProducts();
+                    echo json_encode($products);
+                }
                 break;
             case "POST":
-//		echo $_SERVER['REQUEST_URI'];
-//                $data = $_POST;
                 $request_body = file_get_contents('php://input');
                 $data = json_decode($request_body, true);
 
