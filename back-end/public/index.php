@@ -6,5 +6,6 @@ header('Access-Control-Allow-Credentials: true');
 
 require_once('../vendor/autoload.php');
 
+// Program start
 $API = new \App\API();
 $API->start();

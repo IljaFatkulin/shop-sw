@@ -2,6 +2,7 @@ import React from 'react';
 import classes from "../../styles/Product.module.css";
 
 
+// Product component
 const Product = ({id, name, sku, price, productType, dimension, size, weight, ...props}) => {
 
     if(id != null) {

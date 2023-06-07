@@ -11,7 +11,7 @@ class API
         $this->method = $_SERVER['REQUEST_METHOD'];
     }
 
-    public function start()
+    public function start(): void
     {
         switch ($this->method)
         {

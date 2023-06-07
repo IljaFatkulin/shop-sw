@@ -1,15 +1,15 @@
 import React from "react";
 import './styles/App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import AddProduct from "./pages/AddProduct";
-import Products from "./pages/Products";
+import AddProduct from "./components/product/AddProduct";
+import ProductsList from "./components/product/ProductsList";
 
 function App() {
     return (
         <div className="App">
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Products/>}/>
+                    <Route path="/" element={<ProductsList/>}/>
                     <Route path="/addproduct" element={<AddProduct/>}/>
                 </Routes>
             </BrowserRouter>
